@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>SigmaCR : Classification Module</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../../css/bootstrap-blue.css" rel="stylesheet">
+
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <script type="text/javascript" src="../../js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+
+    <style>
+
+        ul.b {
+            list-style-type: square;
+        }
+    </style>
+
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="../product.html">Product</a></li>
+                    <li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Research</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="information_retrieval.html">Information Retrieval</a></li>
+                            <li><a href="classification.html">Product Classifier</a></li>
+                            <li><a href="ontology.html">Ontology</a></li>
+                            <li><a href="sentiment_analysis.html">Sentiment Analysis</a></li>
+                            <li><a href="sentiwordnet.html">Improved SentiWordnet</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="../Documentation/Architecture.html">Architecture</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="../about_us.html">About Us</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="../../index.html">Home</a> <span class="divider">/</span></li>
+                <li><a href="../research.html">Research</a><span class="divider">/</span></li>
+                <li class="active">Product Classifier</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <h1 style="text-align: center">Classification Module</h1>
+    </div>
+    <div class="row">
+        <h2>Introduction</h2>
+
+        <p>
+            The classification module of SigmaCR is responsible for identifying the product type at the first hand.
+            When the product type of the product is identified from the classification module, the system can use
+            that information to identify it's features in the context of that process using the ontology.
+        </p>
+        <p>
+            The module will use the product reviews and some of the product specifications (if available) for the
+            identification process. First the data will be preprocessed and then they will be forwaded to the
+            classification process. Based on the results of the classification process and the confidence, the module
+            will deside the next steps.
+        </p>
+        <br/>
+
+        <h2>Module Architecture</h2>
+        <p> Following diagram shows the architecture of the module.</p>
+        <img src="../../img/research/classif_arch.png" alt="Classifier architecture"/>
+        <br/>
+
+        <h2>Classification Process</h2>
+        <p>
+            We will use WEKA tool for the core-classification. We will implement some of components to preprocess the
+            data based on our requirements.
+        </p>
+        <br/>
+
+        <h2>Evolving</h2>
+
+        <p>
+            As time goes on new products with new techologies emerges, and the system should be smart to evolve
+            with those changes. For that we need to update our model continuesly so that it learns how to identify
+            the newer products which are significantly different from the initial products. We will save the results of
+            a product identification and use that data back (with the initial data) when
+            building the next classification model.
+        </p>
+        <br/>
+
+        <h2>Considerations</h2>
+        <p>
+            As discussed above the data is refeeded back to enhance the identification process. However this need to
+            be handled with care. What if a product is mis-classified? The system will use that data in the next
+            classification model version and mis-classify several more products. So the error might go increasing and
+            will produce undesired and inaccurate results. And it also affects the other modules which are dependent
+            on this.
+        </p>
+        <p>
+            To avoid these kinds of situations, we will make sure that the confidence of the product identification
+            is acceptable. Based on the confidence level we will make the following actions.
+        </p>
+        <ul>
+            <li><b>Highly confident</b> -
+                <p>
+                    We are very much confident that the product belongs to the classified category. So will accept
+                    the result and will queue it for training next model.
+                </p>
+            </li>
+            <li><b>Moderately confident</b> -
+                <p>
+                    We are more than 50% confident that the product belongs to the classified category. But there
+                    is another category which might accept the product with above 20% confidence. In this case we'll
+                    use the classified category as the input for other modules, and at the same time will queue for
+                    admin's confirmation. Once the admin confirms the result are correct the results will be queued
+                    for training next model
+                </p>
+            </li>
+            <li><b>Less confident</b> -
+                <p>
+                    We have several categories which accepts this product with each having 20% - 50% confidence. We
+                    will classify the product to "unknown" category in this case. And will do the steps for
+                    moderately confidence level.
+                </p>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

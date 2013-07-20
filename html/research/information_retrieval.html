@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>SigmaCR : Information Retrieval Module</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../../css/bootstrap-blue.css" rel="stylesheet">
+
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <script type="text/javascript" src="../../js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+
+    <style>
+
+        ul.b {
+            list-style-type: square;
+        }
+    </style>
+
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="../product.html">Product</a></li>
+                    <li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Research</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="information_retrieval.html">Information Retrieval</a></li>
+                            <li><a href="classification.html">Product Classifier</a></li>
+                            <li><a href="ontology.html">Ontology</a></li>
+                            <li><a href="sentiment_analysis.html">Sentiment Analysis</a></li>
+                            <li><a href="sentiwordnet.html">Improved SentiWordnet</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="../Documentation/Architecture.html">Architecture</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="../about_us.html">About Us</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="../../index.html">Home</a> <span class="divider">/</span></li>
+                <li><a href="../research.html">Research</a><span class="divider">/</span></li>
+                <li class="active">Information Retrieval</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <h1 style="text-align: center">Information Retrieval Module</h1>
+    </div>
+    <div class="row">
+        <h2>Introduction</h2>
+
+        <p>
+            The main feeds for the SigmaCR are customer reviews which are taken from different online e-commerce sites
+            and the metadata of those reviews. As the first approach we have come up with an information retrieval
+            system which collects the information (reviews and matadata) from well-known e-commerce site Amazon.com
+        </p>
+        </br>
+
+        <h3>Getting customer reviews from Amazon.com</h3>
+
+        <p> Basically there are two approaches possible.  </br></br>
+            &nbsp&nbsp <b>1. Use Product Advertising API (web service) which is facilitated by the
+                Amazon.com</b></b></br>
+            &nbsp&nbsp <b>2. Traditional technique of information retrieval, Screen Scraping</b> </br></br>
+            One important constrain we have to deal with when calling amazon web services, which they provide as Amazon
+            Product Advertising API is that the responses from the webservices only contain URLs to the iframes. These
+            Iframes contain the information which we requested for. As an example if we sent a request to their service
+            indicating the requirement for the reviews for a particular product, the response only includes an Iframe
+            link to the customer reviews iframe.
+            This shows that at some point we have to use screen scraping techniques to get the reviews. Therefore we
+            came up with a hybrid approach for the information retrieval system. </p>
+
+        <br/>
+
+        <h3>Calling the web service</h3>
+
+        <p>
+            The first part of the information retrieval system is implemented using JAVA. In order to get the free
+            facilities given by the amazon AWS first the user have to sign up with amazon AWS using the link
+            www.amazon.com and by following the on screen instructions.
+            After signing up with their account you can request your credentials which are needed for accessing their
+            services.
+        </p>
+        <br/>
+
+        <h2>Screen Scraping with NodeJS</h2>
+
+        <p>
+            Considering the scenario in the project SigmaCR we had to come up with an efficient way to scrape content of
+            the pages. There are number of network accesses and many file input output operations. Therefore it is
+            necessary to have a non-blocking asynchronous architecture to deal with the efficiency and optimize the
+            operations. NodeJS seems to be an interesting options for the requirements of the system SigmaCR.
+        </p>
+
+        <p>
+
+        <ol>
+            <li>Web development in a dynamic language (JavaScript) on a VM that is incredibly fast (V8). It is much
+                faster than Ruby, Python, or Perl.
+            </li>
+            <li>Ability to handle thousands of concurrent connections with minimal overhead on a single process.</li>
+            <li>JavaScript is perfect for event loops with first class function objects and closures. People already
+                know
+                how to use it this way having used it in the browser to respond to user initiated events.
+            </li>
+            <li>A lot of people already know JavaScript, even people who do not claim to be programmers. It is arguably
+                the most popular programming language
+            </li>
+            <li>Using JavaScript on a web server as well as the browser reduces the impedance mismatch between the two
+                programming environments which can communicate data structures via JSON that work the same on both sides
+                of
+                the equation. Duplicate form validation code can be shared between server and client, etc.
+            </li>
+
+        </ol>
+
+        <br/>
+
+        <h2>The architecture of the IR System</h2>
+
+        <p>
+            Basically Information Retrieval system comprises of two main components. The web services handler which is
+            implemented using java and the screen scraping scripts which are implemented using NodeJS.
+        </p>
+
+        <p> Following diagram shows the architecture of the module.</p>
+        <img src="../../img/research/retriver.jpeg" alt="Classifier architecture"/>
+        <br/>
+
+        <br/>
+
+        <h2>Retrieving reviews for new search queries</h2>
+
+        <p>
+            Suppose the customer needs to analyze a new product which is not there in the system. For this kind of an
+            approach the solution would be to get the search key and find out the relevant products in the e-commerce
+            site and scrape reviews. The system SigmaCR basically do a search lookup using their product advertising
+            API. From the responses we get, we order the products according to the number of reviews they include. Then
+            the user is given the task to identify the relevant product.
+        </p>
+
+        <p>The main reason for this kind of approach is the ambiguity of the user search queries. Suppose you want to
+            find or evaluate Samsung Galaxy S4 smart phone. The user will never type the whole phrase for the search
+            query. Instead he/she will serach for “galaxy s4” , “Samsung galaxy s4” or even “s4”. Therefore the response
+            results will include the pouches, cases and even stands for the phone Samsung galaxy s4. It is very
+            difficult to intuitively guess what users are looking for. Therefore the best option is to let the user to
+            decide what the exact product they want. When they specify one or two exact products, finding similar
+            products can be taken cared by the information retrieval system. </p>
+
+        <p>Once we identify the relevant products, the system will use those links to the products in order to retrieve
+            reviews from the e-commerce site. Since this is the initial stage of getting reviews for the particular
+            product the system will collect all reviews which are there in the product page with relevant metadata and
+            other important information. Data which are retrieved include the following</p>
+
+        <ul>
+            <li>Customer Review</li>
+            <li>Star rate of the review</li>
+            <li>Author of the review</li>
+            <li>Date accessed</li>
+            <li>URL to the product page</li>
+            <li>URL to the review page</li>
+        </ul>
+
+        <p>These reviews are stored in a hierarchical manner, so that it makes easier to access the reviews with
+            metadata.
+            The screen scraper which is implemented using NodeJS consists of a web spider which is complicated and page
+            dependent. What spider does is, once the scraping is called by the Java program it goes to the product page
+            and retrieve the page. It looks in the page and find out the number of pages which </p>
+        <br/>
+
+        <h2>Updating Review Repository</h2>
+
+        <p>Reviews are needed to be updated. The content of the pages changes with the time. Therefore in order to
+            provide a timely aggregation, definitely we have to have an updated review set. The above system can be
+            reused with few modifications to update the review repository</p>
+
+        <p>When the system review repository needs to be updated simply the system will call the updating component
+            which makes sure the reviews are up to date. What basically the updating components take care of is, when an
+            update request come to a particular product, it simple reads the metadata of the relevant product directory
+            and scrape the reviews which are posted after the last update. (the proposed approaches includes the process
+            of getting relevant version of reviews directly from the web service)</p>
+    </div>
+
+</div>
+
+</body>
+</html>

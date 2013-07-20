@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>SigmaCR : Sentiment Analysis Module</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../../css/bootstrap-blue.css" rel="stylesheet">
+
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <script type="text/javascript" src="../../js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+
+    <style>
+
+        ul.b {
+            list-style-type: square;
+        }
+    </style>
+
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="../product.html">Product</a></li>
+                    <li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Research</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="information_retrieval.html">Information Retrieval</a></li>
+                            <li><a href="classification.html">Product Classifier</a></li>
+                            <li><a href="ontology.html">Ontology</a></li>
+                            <li><a href="sentiment_analysis.html">Sentiment Analysis</a></li>
+                            <li><a href="sentiwordnet.html">Improved SentiWordnet</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="../Documentation/Architecture.html">Architecture</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="../about_us.html">About Us</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="../../index.html">Home</a> <span class="divider">/</span></li>
+                <li><a href="../research.html">Research</a><span class="divider">/</span></li>
+                <li class="active">Sentiment Analyzer</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <h1 style="text-align: center">Sentiment Analysis Module</h1>
+    </div>
+    <div class="row">
+        <h2>Introduction</h2>
+
+        <p>
+            The sentiment Analysis module is responsible of extracting positive and negative sentiments in customer
+            reviews with respect to the features of the products and measure the positivity and negativity of the sentiment.
+        </p>
+        <h2>Process of analysing sentiments</h2>
+        <h4>Opinion words extraction</h4>
+        <p>
+            These are words which are used to express opinions in customer reviews. In our module we have identified a set of opinion
+            words frequently used in customer reviews which is known as seed set. Seed set is divided in to four categories namely,
+            affect_good, affect_bad,affect_good_scale and affect_bad_scale. The affect_good list contains a set of opinion words
+            which are always positive.(e.g. good, great, superb etc.). The affect_bad list contains a set of opinion words which are
+            always negative. (e.g. bad,disgusting,disappointed etc.). The affect_good_scale and affect_bad_scale are different from
+            the other two lists. The opinion words in those two lists can not be differentiate as positive or negative since it will
+            vary depending on the product. (e.g. high, low, thin, big etc.).
+
+        </p>
+        <p>
+            When finding opinion words in customer reviews, We use  WordNet to evolve the the seed set by taking synonym set of
+            each word in seed set. By that we are able to find the opinion words as much as possible in customer reviews.
+        </p>
+        <h4>Rating Opinion words</h4>
+        <p>
+            To measure the positivity and negativity of opinion words we use a rating system. Each opinion word is given a rate
+            and these rates are used to measure the positivity and negativity of customers' sentiments. These ratings are calculated
+            using SentiWordNet and star ratings of reviews.
+        </p>
+        <h4>Sentiments extraction</h4>
+        <p>
+            We use rule based method to extract sentiments in reviews. Since there are more than one sentiment is included in a single
+            sentence we chunked  the  sentences in to phrases. It is very rare to find more than one sentiment in one phrase. Therefore
+            it is assumed that one phrase contains only one sentiment.
+        </p>
+        <h2>Module Architecture</h2>
+        <p> Following diagram shows the architectural overview of the Sentiment Analysis module.</p>
+        <img src="../../img/research/senti_arch.png" alt="Sentiment analyzer architecture"/>
+        <br/>
+        <p>
+            The inputs to the module are rated Opinion words and feature annotated corpus. Output of the module is the
+            annotated corpus with sentiments. Opinion words are rated using SentiWordNet data and star ratings of customer reviews.
+            </br>
+            Module input is provided to a sentiments extraction components pipeline.
+            This pipeline includes English Tokenizer, Sentence Splitter, POS Tagger, Phrase Splitter and Opinion Words Extractor.
+            Opinion word extractor annotate the opinion words in the corpus which is lately used by the sentiment extractor.
+            </br>
+            When the annotated documents are provided to the Sentiment Extractor, it is capable of extracting phrases with sentiments.
+            Opinion direction is decided by opinion words list categories. (e.g. if a word from affect_good list is in a phrase with a
+            feature it is identified as a positive phrase and opinion word's rate is given to the sentiment's rate.)
+        </p>
+    </div>
+</div>
+</body>
+</html>

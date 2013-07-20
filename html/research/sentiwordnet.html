@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>SigmaCR : Improved SentiWrodNet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../../css/bootstrap-blue.css" rel="stylesheet">
+
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <script type="text/javascript" src="../../js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+
+    <style>
+
+        ul.b {
+            list-style-type: square;
+        }
+    </style>
+
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="../product.html">Product</a></li>
+                    <li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Research</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="information_retrieval.html">Information Retrieval</a></li>
+                            <li><a href="classification.html">Product Classifier</a></li>
+                            <li><a href="ontology.html">Ontology</a></li>
+                            <li><a href="sentiment_analysis.html">Sentiment Analysis</a></li>
+                            <li><a href="sentiwordnet.html">Improved SentiWordnet</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="../Documentation/Architecture.html">Architecture</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="../about_us.html">About Us</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="../../index.html">Home</a> <span class="divider">/</span></li>
+                <li><a href="../research.html">Research</a><span class="divider">/</span></li>
+                <li class="active">Improved SentiWordnet</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <h1 style="text-align: center">Improved SentiWordNet</h1>
+    </div>
+    <div class="row">
+        <h2>Introduction</h2>
+
+        <p>
+            In SigmaCR, Sentiment Analysis is one of the major concentrations of the implementation and research part.
+            SigmaCR does not limit its scope to find out whether a review is positive or negative. We have been doing
+            experiments to find out how much positivity or negativity is embedded in a particular phrase of natural
+            language. In order to do that, definitely we have to process natural language and come up with a mechanism
+            to evaluate words in the language
+        </p>
+
+        <p>
+            SentiWordNet [1] is a lexical resource for opinion mining. SentiWordNet assigns to each synset of WordNet
+            [2] three sentiment numerical scores, positivity, negativity and objectivity, describing how Positive,
+            Negative and Objective the terms contained in the synset are. Each of the three scores ranges from 0.0 to
+            1.0, and their sum is 1.0 for each synset. This means that a synset may have nonzero scores for all the
+            three categories, which would indicate that the corresponding terms have, in the sense indicated by the
+            synset, each of the three opinion-related properties only to a certain degree. SentiWordNet word values have
+            been semi-automatically computed based on the use the semi-supervised method described in [2].
+        </p>
+
+        <p> SentiWordNet is just a general purpose collection of adjectives with their relevant scores of positivity,
+            negativity. Most of the applications of the SentiWordNet just pay the attention on the part of sentiment
+            analysis. Ie they only consider about finding. But when it comes to our project context it is very important
+            to have scientific background for these adjectives which implies how much positivity is included in a
+            particular word.
+        </p>
+        <br/>
+
+        <h2>SentiWordNet based on star reviews of the customer reviews</h2>
+
+        <p>The objective of this approach is experiment the positivity or the negativity of an adjective of a given in a
+            review. One important aspect is that we do this experiment for customer reviews which are taken from real
+            customers. Therefore the domain is fixed and it makes these scores more accurate for the given domain of
+            customer reviews. This is one of the advantages of these scores over SentiWordNet Scores. For the project
+            SigmaCR we have done an experiment over this idea using approximately 8500 customer reviews which are taken
+            from amazon.com</p>
+        <br/>
+        <h4>Procedure</h4>
+
+        <p>We need to get the Point of Speech tag of every token (words of the review) in reviews. To make the work
+            efficient and more accurate we will be using morphological analyzer in order to get the root words of
+            adjectives. For these two purposes we have used GATE, which is an application widely used for text
+            processing.</p>
+
+        <p>Step one for the process is reading the review, while reading, all the adjectives will be stored in a
+            HashMap. The root of the adjective will
+            be kept as the key of the HashMap and the value will comprise of number of fields such as occurrence count
+            and the full score. (The score is not given directly from the star review value. The section Scoring using
+            star reviews will describe different approaches we used)
+            For each and every review get the adjectives increase the count of occurrence of that particular adjective.
+            Add the relevant star review value to the full score. If the adjective is a new one which is not encountered
+            before then it will be added to the HashMap.
+            This procedure is carried out for all reviews. Finally for each adjective the full or total score is divided
+            from the number of occurrences and find out an average score. These scores give a more sense about the
+            meaning of the word. </p>
+        <br/>
+
+        <h2>Scoring using star reviews</h2>
+
+        <p>There are few different approaches we have used</p>
+
+        <ul>
+            <li>Approach 1</li>
+            <p>Use the star rate as the score as it is. No modification is done to the star rate and the same value of
+                the star rate is taken as the score of the particular occurrence of the adjective. This makes good
+                results but the range of the scores is less since all the star reviews have a positive value between 0
+                to 5. You can access the results from <a href="../../resources/sentiwordnet_results/result.txt" target="_blank">here</a>.</p>
+            <li>Approach 2</li>
+            <p>The second approach is more concentrated on stretching the score range for the adjectives. Therefore we
+                came up with a scoring mechanism where some of the reviews are taken as reviews with negative star
+                rating values. In this approach we consider reviews with less than a star rating of 3 is as a star rate
+                with negative value. So the formula would be
+
+                <b>
+                    <ul>
+
+                        <li type="square">If the star rate is greater or equal to 3 then score= star rate</li>
+                        <li type="square"> If the star rate is less than 3 then score = negated star rate,</li>
+
+                    </ul>
+                    <br/>
+
+                </b>
+                With this approach, we were able to get more accurate and more interpretable results for scores of
+                adjectives. You can access the results from <a href="../../resources/sentiwordnet_results/result_with_minus_less_than3.txt" target="_blank">here</a>.
+            </p>
+        </ul>
+
+        <h2>Improvements to the extraction of sentiment words </h2>
+
+        <p>In the above approach we just thought about extracting adjective by using POS tags. It would be an ideal
+            approach if the review writers just use adjectives only. Ex- good will be counted as an adjective and the
+            score will be added. Bad will be counted and the score will be added to the relevant key. Most probably the
+            review with the word “good” will have a high star review and the review which contains “bad” will have a
+            less star rate. Therefore it is ideal to aggregate those scores to total score and find the average. But
+            what happens if the user has used “not good” instead of “bad”. Then the word good will be still extracted
+            and the score with less magnitude will be added to the total score which results a drop down of the average
+            value of the word “good”.</p>
+
+        <p>Therefore we do need to concentrate on this and eliminate those negations and use only appropriate
+            adjectives. For that we have used a grammar rules to eliminate negations and change the sign of star rate
+            with negated words. This results in much improved results</p>
+
+        <br/>
+        <br/>
+        <h4>References </h4>
+
+        <p>[1]. A. Esuli and F. Sebastiani, SentiWordNet:A Publicly Available Lexical Resource for Opinion Mining
+            .Proceedings from International Conference onLanguage Resources and Evaluation (LREC), Genoa,2006
+        </p>
+
+        <p>[2]. A. Esuli and F. Sebastiani.Determining termsubjectivity and term orientation for opinion mining.
+            InProceedings of EACL-06,11th Conference of theEuropean Chapter of the Association for
+            ComputationalLinguistics,Trento,IT.Forthcoming,2006</p>
+    </div>
+</div>
+
+</body>
+</html>

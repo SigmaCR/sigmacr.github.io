@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>SigmaCR : Classification Module</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../../css/bootstrap-blue.css" rel="stylesheet">
+
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <script type="text/javascript" src="../../js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+
+    <style>
+
+        ul.b {
+            list-style-type: square;
+        }
+    </style>
+
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="../product.html">Product</a></li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Research</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="../research/information_retrieval.html">Information Retrieval</a></li>
+                            <li><a href="../research/classification.html">Product Classifier</a></li>
+                            <li><a href="../research/ontology.html">Ontology</a></li>
+                            <li><a href="../research/sentiment_analysis.html">Sentiment Analysis</a></li>
+                            <li><a href="../research/sentiwordnet.html">Improved SentiWordnet</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="Architecture.html">Architecture</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="../about_us.html">About Us</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="../../index.html">Home</a> <span class="divider">/</span></li>
+                <li class="disabled">Documentation<span class="divider">/</span></li>
+                <li class="active">Architecutue</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <h1 style="text-align: center">System Architecture</h1>
+    </div>
+    <div class="row">
+        <h2>Subsystem Overview</h2>
+
+        <p>
+            Aggregating and presenting detailed summarizations of reviews consists a lot of computations in the backend.
+            Extracting knowledge from consumer reviews involves complex logic and machine learning. The backend is
+            divided into several subsystems according to their major tasks. The implementation of subsystems is
+            addressed with a modular component approach. This document describes each of the subsystems in the
+            computational backend.
+        </p>
+
+        <p>
+            Following diagram shows a process view of the subsystems.
+        </p>
+        <br/>
+
+        <img src="../../img/documentation/Archi_Backend_Subsystems.JPG" alt="subsystem architecture. process view"/>
+        <br/>
+
+        <p>
+            The total system consists of 5 major subsystems
+        </p>
+        <ol>
+            <li>Information Retrieval Subsystem</li>
+            <li> Ontology/Domain Knowledge</li>
+            <li>Ontology Based Information Extractor</li>
+            <li>Sentiment Analyzer</li>
+            <li>Aggregator</li>
+
+        </ol>
+
+
+        <br/>
+
+
+        <p>
+            Subsystems 2 to 5 are of major research interest. Subsystems 1,3,4,5 form a computational pipeline. To
+            briefly summarize each of the systems have following tasks.
+            IR sub system is responsible for scanning through ecommerce sites and review sites like amazon , cnet and
+            etc and collecting reviews for products. Once new reviews are collected these are pushed to or pulled from
+            the OBIE subsystem. Before beginning to extract information from the gathered reviews, OBIE system
+            identifies the product category of the review sets given by the IR. Then it check for matches with existing
+            models for the same category. If IR system has retrieved two review sets for the same product model and
+            misidentified them as different products, the OBIE system tries to rectify the mistake.
+
+        </p>
+
+        <br/>
+
+        <img src="../../img/documentation/Archi_OBIE_subsys.JPG" alt="subsystem architecture. process view"/>
+        <br/>
+
+        <p>
+            The OBIE system uses the domain knowledge from the product ontology.
+        </p>
+
+        <p>
+            The output from the OBIE system is pushed to the Sentiment analyzer where it uses the identified features
+            and their descriptions to identify the customer opinion for those features. The review aggregator uses the
+            output from the Sentiment analyzer to aggregate the opinions for each feature and it persists the aggregated
+            results as well as the individually analyzed reviews to a persistence store. The frontend uses this
+            persistence store to present users with review aggregations and other useful information.
+        </p>
+
+    </div>
+</div>
+
+</body>
+
+</html>
